@@ -2,10 +2,9 @@ import {
   DingtalkOutlined as LogoDashboard,
   AppstoreOutlined as LogoMenu,
   FolderOutlined as LogoFolder,
-  PieChartOutlined as LogoChart,
-  FundProjectionScreenOutlined as LogoReport,
-  CloudServerOutlined as LogoUpload,
+  UploadOutlined as LogoBackup,
 } from "@ant-design/icons";
+import Link from "next/link";
 
 const Sidebar = () => {
   return (
@@ -18,21 +17,21 @@ const Sidebar = () => {
           <span className="lg:block text-center w-6">•••</span>
         </div>
         <ul className="mt-3 flex flex-col items-center justify-center">
-          <li className="px-2 py-2 rounded-sm mb-2 hover:bg-slate-400 cursor-pointer">
-            <LogoMenu style={{ fontSize: "26px", color: "#ffffff" }} />
-          </li>
-          <li className="px-2 py-2 rounded-sm mb-2 hover:bg-slate-400 cursor-pointer">
-            <LogoFolder style={{ fontSize: "26px", color: "#ffffff" }} />
-          </li>
-          <li className="px-2 py-2 rounded-sm mb-2 hover:bg-slate-400 cursor-pointer">
-            <LogoChart style={{ fontSize: "26px", color: "#ffffff" }} />
-          </li>
-          <li className="px-2 py-2 rounded-sm mb-2 hover:bg-slate-400 cursor-pointer">
-            <LogoReport style={{ fontSize: "26px", color: "#ffffff" }} />
-          </li>
-          <li className="px-2 py-2 rounded-sm mb-2 hover:bg-slate-400 cursor-pointer">
-            <LogoUpload style={{ fontSize: "26px", color: "#ffffff" }} />
-          </li>
+          <Link href="/summary">
+            <li className="px-2 py-2 rounded-sm mb-2 hover:bg-slate-400 cursor-pointer">
+              <LogoMenu style={{ fontSize: "26px", color: "#ffffff" }} />
+            </li>
+          </Link>
+          <Link href="/inventory">
+            <li className="px-2 py-2 rounded-sm mb-2 hover:bg-slate-400 cursor-pointer">
+              <LogoFolder style={{ fontSize: "26px", color: "#ffffff" }} />
+            </li>
+          </Link>
+          <Link href="#">
+            <li className="px-2 py-2 rounded-sm mb-2 hover:bg-slate-400 cursor-pointer">
+              <LogoBackup style={{ fontSize: "26px", color: "#ffffff" }} />
+            </li>
+          </Link>
         </ul>
       </div>
     </div>

@@ -49,12 +49,8 @@ const SummaryPage = () => {
             data={data}
           />
         </Card>
-        <Card className="row-span-2">
-          <SummaryTable />
-        </Card>
-        <Card className="">
-          <SummaryTable />
-        </Card>
+        <Card className="row-span-2"></Card>
+        <Card className=""></Card>
       </div>
     </div>
   );
