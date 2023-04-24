@@ -2,7 +2,7 @@ import { useState } from "react";
 import { LoadingOutlined as Loading } from "@ant-design/icons";
 import Text from "@/components/atoms/text";
 
-const Modal = ({ action, close, onSuccess }) => {
+const AddDeviceModal = ({ action, close, onSuccess }) => {
   const [deviceType, setDeviceType] = useState("cisco_ios");
   const [hostInput, setHostInput] = useState("");
   const [usernameInput, setUsernameInput] = useState("");
@@ -135,4 +135,4 @@ const Modal = ({ action, close, onSuccess }) => {
   );
 };
 
-export default Modal;
+export default AddDeviceModal;

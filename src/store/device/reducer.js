@@ -1,18 +1,10 @@
-import { fetch } from "@/utils/network";
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
+import { fetchDevice } from "./action";
 
 const initialState = {
   data: [],
   status: "idle",
 };
-
-export const fetchDevice = createAsyncThunk(
-  "deviceList/fetchDevice",
-  async (deviceId, thunkAPI) => {
-    const response = await fetch.get("/devices/" + deviceId);
-    return response.data;
-  }
-);
 
 export const deviceSlice = createSlice({
   name: "device",

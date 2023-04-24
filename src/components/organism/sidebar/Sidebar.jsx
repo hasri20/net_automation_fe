@@ -17,7 +17,7 @@ const Sidebar = () => {
           <span className="lg:block text-center w-6">•••</span>
         </div>
         <ul className="mt-3 flex flex-col items-center justify-center">
-          <Link href="/summary">
+          <Link href="/">
             <li className="px-2 py-2 rounded-sm mb-2 hover:bg-slate-400 cursor-pointer">
               <LogoMenu style={{ fontSize: "26px", color: "#ffffff" }} />
             </li>
@@ -27,7 +27,7 @@ const Sidebar = () => {
               <LogoFolder style={{ fontSize: "26px", color: "#ffffff" }} />
             </li>
           </Link>
-          <Link href="#">
+          <Link href="/backup">
             <li className="px-2 py-2 rounded-sm mb-2 hover:bg-slate-400 cursor-pointer">
               <LogoBackup style={{ fontSize: "26px", color: "#ffffff" }} />
             </li>
