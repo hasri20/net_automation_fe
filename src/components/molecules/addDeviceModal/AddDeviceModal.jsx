@@ -2,7 +2,7 @@ import { useState } from "react";
 import { LoadingOutlined as Loading } from "@ant-design/icons";
 import Text from "@/components/atoms/text";
 
-const AddDeviceModal = ({ action, close, onSuccess }) => {
+const AddDeviceModal = ({ close, onSuccess }) => {
   const [deviceType, setDeviceType] = useState("cisco_ios");
   const [hostInput, setHostInput] = useState("");
   const [usernameInput, setUsernameInput] = useState("");
@@ -10,10 +10,20 @@ const AddDeviceModal = ({ action, close, onSuccess }) => {
   const [isLoading, setLoading] = useState(false);
   const [errors, setErrors] = useState(null);
 
+  const insertDevice = async (data) => {
+    try {
+      const response = await fetch.post("devices", data);
+      return response.data;
+    } catch (err) {
+      console.log(err);
+      return err;
+    }
+  };
+
   const onSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    const response = await action({
+    const response = await insertDevice({
       device_type: deviceType,
       host: hostInput,
       username: usernameInput,

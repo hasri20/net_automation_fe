@@ -4,7 +4,7 @@ import {
   DeleteOutlined as LogoDelete,
 } from "@ant-design/icons";
 
-const ActionButton = ({ searchAction, editAction, deleteAction }) => {
+const InventoryActionButton = ({ searchAction, editAction, deleteAction }) => {
   return (
     <div className="flex gap-1">
       <div
@@ -29,4 +29,4 @@ const ActionButton = ({ searchAction, editAction, deleteAction }) => {
   );
 };
 
-export default ActionButton;
+export default InventoryActionButton;

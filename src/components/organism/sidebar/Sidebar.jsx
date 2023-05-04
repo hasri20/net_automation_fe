@@ -3,6 +3,7 @@ import {
   AppstoreOutlined as LogoMenu,
   FolderOutlined as LogoFolder,
   UploadOutlined as LogoBackup,
+  CopyOutlined as LogoProvision,
 } from "@ant-design/icons";
 import Link from "next/link";
 
@@ -30,6 +31,11 @@ const Sidebar = () => {
           <Link href="/backup">
             <li className="px-2 py-2 rounded-sm mb-2 hover:bg-slate-400 cursor-pointer">
               <LogoBackup style={{ fontSize: "26px", color: "#ffffff" }} />
+            </li>
+          </Link>
+          <Link href="/provisioning">
+            <li className="px-2 py-2 rounded-sm mb-2 hover:bg-slate-400 cursor-pointer">
+              <LogoProvision style={{ fontSize: "26px", color: "#ffffff" }} />
             </li>
           </Link>
         </ul>

@@ -1,18 +1,35 @@
 import Card from "@/components/atoms/card";
 import PieChart from "@/components/atoms/pieChart";
 import Text from "@/components/atoms/text";
-import SummaryCard from "@/components/molecules/summaryCard";
 import SummaryTable from "@/components/molecules/summaryTable";
-import { fetchDeviceList } from "@/store/deviceList/deviceListSlice";
+import {
+  deviceCountLabelSelector,
+  deviceCountSeriesSelector,
+  deviceStatusLabelSelector,
+  deviceStatusSeriesSelector,
+  fetchDeviceCount,
+  fetchInterfacesRank,
+  fetchStatusCount,
+} from "@/store/summary/summarySlice";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const SummaryPage = () => {
   const dispatch = useDispatch();
-  const data = useSelector((state) => state.deviceList.data);
+  const deviceCountLabel = useSelector(deviceCountLabelSelector);
+  const deviceCountSeries = useSelector(deviceCountSeriesSelector);
+
+  const deviceStatusLabel = useSelector(deviceStatusLabelSelector);
+  const deviceStatusSeries = useSelector(deviceStatusSeriesSelector);
+
+  const interfaceRank = useSelector(
+    (state) => state.summary.interfacesRank.data
+  );
 
   useEffect(() => {
-    dispatch(fetchDeviceList());
+    dispatch(fetchDeviceCount());
+    dispatch(fetchStatusCount());
+    dispatch(fetchInterfacesRank());
   }, []);
 
   return (
@@ -21,16 +38,16 @@ const SummaryPage = () => {
         <Card className="basis-1/3">
           <Text>Inventory Summary</Text>
           <PieChart
-            label={["7206VXR", "CSR1000V", "3725"]}
-            series={[3, 4, 8]}
+            label={deviceCountLabel}
+            series={deviceCountSeries}
             id="inventory-summary"
           />
         </Card>
         <Card className="basis-1/3">
           <Text>Latest Discovery</Text>
           <PieChart
-            label={["Discovered", "Unreachable"]}
-            series={[13, 2]}
+            label={deviceStatusLabel}
+            series={deviceStatusSeries}
             id="discovery-summary"
           />
         </Card>
@@ -44,9 +61,9 @@ const SummaryPage = () => {
         </Card>
       </div>
 
-      <div className="grid grid-cols-2 grid-flow-col gap-4">
+      <div>
         <Card>
-          <Text>Health Score</Text>
+          <Text>Interface Ranking</Text>
           <SummaryTable
             columns={[
               {
@@ -54,18 +71,26 @@ const SummaryPage = () => {
                 accessor: "hostname",
               },
               {
-                Header: "Type",
-                accessor: "hardware",
+                Header: "Interface Name",
+                accessor: "interface",
               },
-
               {
-                Header: "Health Score",
+                Header: "Input Packets (bps)",
+                accessor: "input_packets",
+              },
+              {
+                Header: "Output Packets (bps)",
+                accessor: "output_packets",
+              },
+              {
+                Header: "Total In/Out (bps)",
+                accessor: "total",
               },
             ]}
-            data={data}
+            data={interfaceRank}
           />
         </Card>
-        <Card className="row-span-2"></Card>
+        {/* <Card className="row-span-2"></Card> */}
       </div>
     </div>
   );
