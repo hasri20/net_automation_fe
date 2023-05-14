@@ -6,11 +6,13 @@ import ShowTemplateModal from "@/components/molecules/showTemplateModal/showTemp
 import UploadTemplateModal from "@/components/molecules/uploadTemplateModal";
 import { fetch } from "@/utils/network";
 import { useEffect, useState } from "react";
-import Swal from "sweetalert2";
 
 const ProvisioningPage = () => {
   const [templateList, setTemplateList] = useState([]);
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState({
+    isShow: false,
+    templateId: null,
+  });
   const [showTemplateModal, setShowTemplateModal] = useState(false);
   const [showUploadTemplateModal, setShowUploadTemplateModal] = useState(false);
 
@@ -19,30 +21,10 @@ const ProvisioningPage = () => {
     setTemplateList(response.data);
   };
 
-  const onProvision = async ({ deviceId }) => {
-    if (!deviceId) {
-      return;
-    }
-
-    const response = await fetch.post(`provision/${showModal}/${deviceId}`);
-    setShowModal(false);
-
-    if (response.data.status_code === 500) {
-      Swal.fire({
-        icon: "error",
-        title: "Provision Error",
-        text: response.data.detail,
-      });
-    } else {
-      Swal.fire({
-        title: "Success",
-        text: "Device Provisioned",
-        icon: "success",
-        confirmButtonText: "Ok",
-      });
-    }
+  const onSuccessUpload = () => {
+    setShowUploadTemplateModal(false);
+    fetchTemplateList();
   };
-
   useEffect(() => {
     fetchTemplateList();
   }, []);
@@ -79,7 +61,9 @@ const ProvisioningPage = () => {
                 </Button>
                 <Button
                   className="ml-2"
-                  onClick={() => setShowModal(template.id)}
+                  onClick={() =>
+                    setShowModal({ isShow: true, templateId: template.id })
+                  }
                 >
                   Push
                 </Button>
@@ -88,10 +72,10 @@ const ProvisioningPage = () => {
           </Card>
         ))}
       </div>
-      {showModal && (
+      {showModal.isShow && (
         <ProvisionModal
-          onProvision={onProvision}
-          onClose={() => setShowModal(false)}
+          templateId={showModal.templateId}
+          onClose={() => setShowModal({ isShow: false, templateId: null })}
         />
       )}
       {showTemplateModal && (
@@ -104,6 +88,7 @@ const ProvisioningPage = () => {
       {showUploadTemplateModal && (
         <UploadTemplateModal
           onClose={() => setShowUploadTemplateModal(false)}
+          onSuccess={onSuccessUpload}
         />
       )}
     </div>

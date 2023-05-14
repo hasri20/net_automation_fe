@@ -1,20 +1,22 @@
-import Modal from "@/components/atoms/modal";
-import { fetch } from "@/utils/network";
 import { useState } from "react";
+import { LoadingOutlined as Loading } from "@ant-design/icons";
+import { fetch } from "@/utils/network";
+import Modal from "@/components/atoms/modal";
+import Text from "@/components/atoms/text";
 
-const UpdateDeviceModal = ({ device, onCancel }) => {
+const UpdateDeviceModal = ({ device, onCancel, onSuccess }) => {
   const [hostInput, setHostInput] = useState("");
   const [usernameInput, setUsernameInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
   const [isLoading, setLoading] = useState(false);
   const [errors, setErrors] = useState(null);
 
-  const updateDevice = async (data) => {
+  const updateDevice = async ({ host, username, password }) => {
     try {
       const response = await fetch.put(`devices/${device.id}`, {
-        host: hostInput,
-        username: usernameInput,
-        password: passwordInput,
+        host,
+        username,
+        password,
         use_payload: true,
       });
       return response.data;
@@ -28,22 +30,18 @@ const UpdateDeviceModal = ({ device, onCancel }) => {
     e.preventDefault();
     setLoading(true);
     const response = await updateDevice({
-      device_type: deviceType,
       host: hostInput,
       username: usernameInput,
       password: passwordInput,
     });
 
-    console.log(response);
-
-    // setLoading(false);
-
-    // if (response.status_code && response.status_code !== 200) {
-    //   setErrors(response.detail);
-    // } else {
-    //   onSuccess();
-    //   setErrors(null);
-    // }
+    setLoading(false);
+    if (response.status_code && response.status_code !== 200) {
+      setErrors(response.detail);
+    } else {
+      onSuccess();
+      setErrors(null);
+    }
   };
 
   return (
@@ -100,16 +98,19 @@ const UpdateDeviceModal = ({ device, onCancel }) => {
             required
           />
         </div>
+        <div>
+          <Text className="text-red-500">{errors}</Text>
+        </div>
       </Modal.Body>
       <Modal.Footer>
         <button
           type="submit"
-          // disabled={isLoading}
+          disabled={isLoading}
           className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 disabled:bg-slate-200 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center flex items-center"
           onClick={onSubmit}
         >
           Update
-          {/* {isLoading && <Loading className="ml-2" />} */}
+          {isLoading && <Loading className="ml-2" />}
         </button>
         <button
           type="button"

@@ -1,5 +1,8 @@
-import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
+import { fetchDevice } from "@/store/device/action";
+import { SearchOutlined as LogoSearch } from "@ant-design/icons";
 import Link from "next/link";
 import Text from "@/components/atoms/text";
 import Card from "@/components/atoms/card";
@@ -7,8 +10,35 @@ import SummaryTable from "@/components/molecules/summaryTable";
 
 const DeviceDetailInterface = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
   const { deviceId } = router.query;
-  const data = useSelector((state) => state.device.data);
+
+  const navigateDevice = (e, index) => {
+    e.preventDefault();
+    router.push(`/inventory/${deviceId}/interface/${index}`);
+  };
+
+  const interfaces = useSelector((state) =>
+    state.device.data?.interfaces?.map((data, index) => ({
+      ...data,
+      action: (
+        <div className="flex">
+          <div
+            className="flex items-center p-2 bg-white border border-gray-200 rounded-lg hover:bg-gray-100 cursor-pointer"
+            onClick={(e) => navigateDevice(e, index)}
+          >
+            <LogoSearch style={{ fontSize: "13px", color: "#000000" }} />
+          </div>
+        </div>
+      ),
+    }))
+  );
+
+  useEffect(() => {
+    if (deviceId) {
+      dispatch(fetchDevice(deviceId));
+    }
+  }, [deviceId]);
 
   return (
     <div className="m-4">
@@ -32,12 +62,12 @@ const DeviceDetailInterface = () => {
             </Link>
           </li>
           <li className="mr-2">
-            <a
-              href="#"
+            <Link
+              href={`/inventory/${deviceId}/event`}
               className="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50"
             >
               Event &amp; Alarm
-            </a>
+            </Link>
           </li>
         </ul>
       </div>
@@ -77,8 +107,12 @@ const DeviceDetailInterface = () => {
               Header: "protocol status",
               accessor: "protocol_status",
             },
+            {
+              Header: "Action",
+              accessor: "action",
+            },
           ]}
-          data={data.interfaces}
+          data={interfaces}
         />
       </Card>
     </div>

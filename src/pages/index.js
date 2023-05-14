@@ -3,11 +3,14 @@ import PieChart from "@/components/atoms/pieChart";
 import Text from "@/components/atoms/text";
 import SummaryTable from "@/components/molecules/summaryTable";
 import {
+  devicFaultsLabelSelector,
+  devicFaultsSeriesSelector,
   deviceCountLabelSelector,
   deviceCountSeriesSelector,
   deviceStatusLabelSelector,
   deviceStatusSeriesSelector,
   fetchDeviceCount,
+  fetchFaultsCount,
   fetchInterfacesRank,
   fetchStatusCount,
 } from "@/store/summary/summarySlice";
@@ -22,6 +25,9 @@ const SummaryPage = () => {
   const deviceStatusLabel = useSelector(deviceStatusLabelSelector);
   const deviceStatusSeries = useSelector(deviceStatusSeriesSelector);
 
+  const deviceFaultsLabel = useSelector(devicFaultsLabelSelector);
+  const deviceFaultsSeries = useSelector(devicFaultsSeriesSelector);
+
   const interfaceRank = useSelector(
     (state) => state.summary.interfacesRank.data
   );
@@ -29,6 +35,7 @@ const SummaryPage = () => {
   useEffect(() => {
     dispatch(fetchDeviceCount());
     dispatch(fetchStatusCount());
+    dispatch(fetchFaultsCount());
     dispatch(fetchInterfacesRank());
   }, []);
 
@@ -54,8 +61,8 @@ const SummaryPage = () => {
         <Card className="basis-1/3">
           <Text>Faults Summary</Text>
           <PieChart
-            label={["Critical", "Major", "Minor", "Warning"]}
-            series={[3, 4, 8, 2]}
+            label={deviceFaultsLabel}
+            series={deviceFaultsSeries}
             id="faults-summary"
           />
         </Card>
@@ -90,7 +97,6 @@ const SummaryPage = () => {
             data={interfaceRank}
           />
         </Card>
-        {/* <Card className="row-span-2"></Card> */}
       </div>
     </div>
   );

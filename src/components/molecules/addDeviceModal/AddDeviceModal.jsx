@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { LoadingOutlined as Loading } from "@ant-design/icons";
+import { fetch } from "@/utils/network";
 import Text from "@/components/atoms/text";
 
-const AddDeviceModal = ({ close, onSuccess }) => {
+const AddDeviceModal = ({ onCancel, onSuccess }) => {
   const [deviceType, setDeviceType] = useState("cisco_ios");
   const [hostInput, setHostInput] = useState("");
   const [usernameInput, setUsernameInput] = useState("");
@@ -132,7 +133,7 @@ const AddDeviceModal = ({ close, onSuccess }) => {
               </button>
               <button
                 type="button"
-                onClick={close}
+                onClick={onCancel}
                 className="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 "
               >
                 Cancel

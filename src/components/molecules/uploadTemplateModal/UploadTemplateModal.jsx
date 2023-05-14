@@ -1,21 +1,24 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { fetch } from "@/utils/network";
+import { CloudUploadOutlined } from "@ant-design/icons";
+import { LoadingOutlined as Loading } from "@ant-design/icons";
 import Modal from "@/components/atoms/modal";
 import Button from "@/components/atoms/button";
-import { CloudUploadOutlined } from "@ant-design/icons";
 
-const UploadTemplateModal = ({ onClose }) => {
+const UploadTemplateModal = ({ onClose, onSuccess }) => {
   const [selectedFiles, setSelectedFiles] = useState(null);
   const [deviceType, setDeviceType] = useState("cisco_ios");
   const [filenameInput, setFilenameInput] = useState("");
   const [titleInput, setTitleInput] = useState("");
   const [descriptionInput, setDescriptionInput] = useState("");
+  const [isLoading, setLoading] = useState(false);
 
   const onFileChange = (event) => {
     setSelectedFiles(event.target.files[0]);
   };
 
   const onCreate = async () => {
+    setLoading(true);
     const formData = new FormData();
 
     formData.append("file", selectedFiles);
@@ -25,7 +28,8 @@ const UploadTemplateModal = ({ onClose }) => {
     formData.append("device_type", deviceType);
 
     await fetch.post("provision", formData);
-    onClose();
+    setLoading(false);
+    onSuccess();
   };
 
   return (
@@ -142,8 +146,9 @@ const UploadTemplateModal = ({ onClose }) => {
       </Modal.Body>
       <Modal.Footer>
         <div className="flex w-full justify-end">
-          <Button onClick={onCreate} className="mr-2">
+          <Button onClick={onCreate} className="mr-2" disabled={isLoading}>
             Create
+            {isLoading && <Loading className="ml-2" />}
           </Button>
           <Button onClick={onClose}>Cancel</Button>
         </div>

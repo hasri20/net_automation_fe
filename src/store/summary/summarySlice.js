@@ -10,6 +10,10 @@ const initialState = {
     status: "idle",
     data: [],
   },
+  faultsCount: {
+    status: "idle",
+    data: [],
+  },
   interfacesRank: {
     status: "idle",
     data: [],
@@ -29,6 +33,14 @@ export const fetchStatusCount = createAsyncThunk(
   "summary/fetchStatusCount",
   async () => {
     const response = await fetch.get("/summary/count-status");
+    return response.data;
+  }
+);
+
+export const fetchFaultsCount = createAsyncThunk(
+  "summary/fetchFaultsCount",
+  async () => {
+    const response = await fetch.get("/summary/count-faults");
     return response.data;
   }
 );
@@ -61,6 +73,13 @@ export const summarySlice = createSlice({
         state.statusCount.status = "idle";
         state.statusCount.data = action.payload;
       })
+      .addCase(fetchFaultsCount.pending, (state) => {
+        state.faultsCount.status = "loading";
+      })
+      .addCase(fetchFaultsCount.fulfilled, (state, action) => {
+        state.faultsCount.status = "idle";
+        state.faultsCount.data = action.payload;
+      })
       .addCase(fetchInterfacesRank.pending, (state) => {
         state.interfacesRank.status = "loading";
       })
@@ -80,5 +99,10 @@ export const deviceStatusSeriesSelector = (state) =>
   state.summary.statusCount.data.map((data) => data.count);
 export const deviceStatusLabelSelector = (state) =>
   state.summary.statusCount.data.map((data) => data.value);
+
+export const devicFaultsSeriesSelector = (state) =>
+  state.summary.faultsCount.data.map((data) => data.count);
+export const devicFaultsLabelSelector = (state) =>
+  state.summary.faultsCount.data.map((data) => data.label);
 
 export default summarySlice.reducer;

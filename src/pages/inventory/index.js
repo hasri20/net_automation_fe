@@ -48,7 +48,7 @@ const InventoryPage = () => {
     }
   };
 
-  const data = useSelector((state) =>
+  const deviceList = useSelector((state) =>
     state.deviceList.data.map((data) => ({
       ...data,
       action: (
@@ -66,6 +66,11 @@ const InventoryPage = () => {
     dispatch(fetchDeviceList());
   };
 
+  const onSuccessUpdate = () => {
+    setShowUpdateModal(false);
+    dispatch(fetchDeviceList());
+  };
+
   useEffect(() => {
     dispatch(fetchDeviceList());
   }, []);
@@ -79,6 +84,7 @@ const InventoryPage = () => {
         <UpdateDeviceModal
           device={showUpdateModal.data}
           onCancel={() => setShowUpdateModal({ isShow: false, data: null })}
+          onSuccess={onSuccessUpdate}
         />
       )}
       <Card>
@@ -110,12 +116,12 @@ const InventoryPage = () => {
               accessor: "action",
             },
           ]}
-          data={data}
+          data={deviceList}
         />
       </Card>
       {showModal && (
         <AddDeviceModal
-          close={() => setShowModal(false)}
+          onCancel={() => setShowModal(false)}
           onSuccess={onSuccessInsert}
         />
       )}

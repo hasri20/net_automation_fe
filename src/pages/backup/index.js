@@ -1,3 +1,7 @@
+import { fetchBackupList } from "@/store/backupList/action";
+import { fetch } from "@/utils/network";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Button from "@/components/atoms/button";
 import Card from "@/components/atoms/card";
 import Text from "@/components/atoms/text";
@@ -5,10 +9,6 @@ import BackupActionButton from "@/components/molecules/backupActionButton";
 import CreateBackupModal from "@/components/molecules/createBackupModal";
 import ShowBackupModal from "@/components/molecules/showBackupModal";
 import SummaryTable from "@/components/molecules/summaryTable";
-import { fetchBackupList } from "@/store/backupList/action";
-import { fetch } from "@/utils/network";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 
 const BackupPage = () => {

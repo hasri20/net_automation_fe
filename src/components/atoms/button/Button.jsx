@@ -1,4 +1,4 @@
-const Button = ({ children, onClick, className }) => {
+const Button = ({ children, onClick, className, disabled = false }) => {
   return (
     <button
       type="button"
@@ -7,6 +7,7 @@ const Button = ({ children, onClick, className }) => {
         className
       }
       onClick={onClick}
+      disabled={disabled}
     >
       {children}
     </button>

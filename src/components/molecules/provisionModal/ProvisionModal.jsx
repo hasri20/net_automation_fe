@@ -1,11 +1,43 @@
+import { useEffect, useState } from "react";
+import { LoadingOutlined as Loading } from "@ant-design/icons";
+import { fetch } from "@/utils/network";
 import Button from "@/components/atoms/button";
 import Modal from "@/components/atoms/modal";
-import { fetch } from "@/utils/network";
-import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
-const ProvisionModal = ({ onProvision, onClose }) => {
+const ProvisionModal = ({ templateId, onClose }) => {
   const [deviceList, setDeviceList] = useState([]);
   const [selectedDevice, setSelectedDevice] = useState("");
+  const [isLoading, setLoading] = useState(false);
+
+  const onProvision = async () => {
+    setLoading(true);
+
+    if (!selectedDevice) {
+      return;
+    }
+
+    const response = await fetch.post(
+      `provision/${templateId}/${selectedDevice}`
+    );
+    setLoading(false);
+    onClose();
+
+    if (response.data.status_code === 500) {
+      Swal.fire({
+        icon: "error",
+        title: "Provision Error",
+        text: response.data.detail,
+      });
+    } else {
+      Swal.fire({
+        title: "Success",
+        text: "Device Provisioned",
+        icon: "success",
+        confirmButtonText: "Ok",
+      });
+    }
+  };
 
   const fetchDeviceList = async () => {
     try {
@@ -50,11 +82,9 @@ const ProvisionModal = ({ onProvision, onClose }) => {
       </Modal.Body>
       <Modal.Footer>
         <div className="flex w-full justify-end">
-          <Button
-            onClick={() => onProvision({ deviceId: selectedDevice })}
-            className="mr-2"
-          >
+          <Button onClick={onProvision} className="mr-2" disabled={isLoading}>
             Provision
+            {isLoading && <Loading className="ml-2" />}
           </Button>
           <Button onClick={onClose}>Cancel</Button>
         </div>
