@@ -19,12 +19,16 @@ const SummaryTable = ({ columns = [], data = [] }) => {
           // Loop over the header rows
           headerGroups.map((headerGroup) => (
             // Apply the header row props
-            <tr {...headerGroup.getHeaderGroupProps()}>
+            <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup.id}>
               {
                 // Loop over the headers in each row
                 headerGroup.headers.map((column) => (
                   // Apply the header cell props
-                  <th {...column.getHeaderProps()} className="px-6 py-3">
+                  <th
+                    {...column.getHeaderProps()}
+                    className="px-6 py-3"
+                    key={column.id}
+                  >
                     {
                       // Render the header
                       column.render("Header")
@@ -46,6 +50,7 @@ const SummaryTable = ({ columns = [], data = [] }) => {
             return (
               // Apply the row props
               <tr
+                key={row.id}
                 {...row.getRowProps()}
                 className="bg-white border-b text-gray-900 hover:bg-gray-50 "
               >
@@ -54,7 +59,11 @@ const SummaryTable = ({ columns = [], data = [] }) => {
                   row.cells.map((cell) => {
                     // Apply the cell props
                     return (
-                      <td {...cell.getCellProps()} className="px-6 py-3">
+                      <td
+                        key={cell.id}
+                        {...cell.getCellProps()}
+                        className="px-6 py-3"
+                      >
                         {
                           // Render the cell contents
                           cell.render("Cell")

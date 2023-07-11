@@ -18,7 +18,7 @@ const BackupPage = () => {
 
   const restoreBackup = async (id) => {
     const response = await fetch.post(`restore/${id}`);
-    if (response.status === 200) {
+    if (response.data.status === "Success") {
       Swal.fire({
         title: "Success",
         text: "Configuration restored",
@@ -52,14 +52,7 @@ const BackupPage = () => {
     }
 
     const response = await fetch.post(`backup/${deviceId}`);
-    if (response.data.status_code === 500) {
-      setShowCreateBackupModal(false);
-      Swal.fire({
-        icon: "error",
-        title: "Create Backup Error",
-        text: response.data.detail,
-      });
-    } else {
+    if (response.status === 200) {
       setShowCreateBackupModal(false);
       Swal.fire({
         title: "Success",
@@ -68,6 +61,13 @@ const BackupPage = () => {
         confirmButtonText: "Ok",
       });
       dispatch(fetchBackupList());
+    } else {
+      setShowCreateBackupModal(false);
+      Swal.fire({
+        icon: "error",
+        title: "Create Backup Error",
+        text: response.data.detail,
+      });
     }
   };
 
